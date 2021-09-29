@@ -1,0 +1,90 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model Core.Entites.Post
+
+<section>
+
+
+    <div class="trending">
+        <div class="container-fluid">
+
+            <div class="row">
+
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                    <img class="trend-pic" src="~/uploads/@Model.picture" alt="img">
+                </div>
+
+
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+
+                    <div class="trend-post-details">
+
+                        <div class="trend">
+                            <a href="#">
+                                Trending
+                            </a>
+                        </div>
+
+                        <div class="trend-header">
+                            @Model.title
+                        </div>
+
+
+
+                        <div class="trend-body">
+                            @Model.summary
+                        </div>
+
+                        <div class="post-author">
+
+                            <div class="row mt-5">
+
+                                <div class="col-lg-1  ">
+                                    <img class="author-pic" src="assets/2.PNG">
+                                </div>
+
+                                <div class="col-lg-11">
+
+                                    <div class="author">
+                                        <span class="author-name">Robert Wilson</span>
+                                        <a href="#" class="p-tag">
+                                            Work
+                                        </a>
+
+                                        <a href="#" class="p-tag">
+                                            Notes
+                                        </a>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+</section>
+
+<section>
+
+    <div class="container post-blog">
+      @Html.Raw(Model.content)   
+    </div>
+
+</section>

@@ -1,0 +1,193 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="hero-page">
+
+    <div class="mid-text">
+        <div class="word">
+            <span class="p">Ay</span><span class="n">Blog</span>
+        </div>
+        <h5>Coding topics , thoughts and any</h5>
+    </div>
+
+</div>
+
+<section id="posts">
+</section>
+
+<section id="select-page">
+
+
+        <div class="container  control-btn">
+            <div class="col-md-12 text-center">
+
+                <button class="prev-btn stop">Previous</button>
+
+                <button class="next-btn go">Next</button>
+
+            </div>
+        </div>
+
+</section>
+
+
+
+<script>
+
+    //posts.TotalPages to create page numbers
+    //posts.CurrentPage create circle
+    //posts.HasNext, posts.HasPrevious  check
+    $(function () {
+
+        var CurrentPage ,
+            HasNext,
+            HasPrev,
+            TotalPages = 0,
+            pageSize = 4,
+            page=1;
+
+        getPosts(pageSize, page);
+       
+
+
+        $(".prev-btn").on("click", function () {
+
+            if (HasPrev == true) {
+                getPosts(pageSize, --CurrentPage);
+
+                if ($(".next-btn").hasClass("stop")) {
+                    $(".next-btn").removeClass("stop");
+                    $(".next-btn").addClass("go");
+                }
+            }
+
+            else {
+                if ($(".prev-btn").hasClass("go")) {
+                    $(".prev-btn").removeClass("go");
+                    $(".prev-btn").addClass("stop");
+                }
+            }
+        });
+
+        $(".next-btn").on("click", function () {
+            if (HasNext == true) {
+                getPosts(pageSize, ++CurrentPage);
+                if ($(".prev-btn").hasClass("stop")) {
+                    $(".prev-btn").removeClass("stop");
+                    $(".prev-btn").addClass("go");
+                }
+            }
+            else {
+                if ($(".next-btn").hasClass("go")) {
+                    $(".next-btn").removeClass("go");
+                    $(".next-btn").addClass("stop");
+                }
+            }   
+        });
+
+
+        html = "";
+        $("#posts").html(html);
+
+        function getPosts(pageSize, pageNumber) {
+            $.ajax({
+                type: "POST",
+                url: "https://localhost:5001/Post/GetPosts",
+                data: { "pageSize": pageSize, "pageNumber": pageNumber },
+                success: function (response) {
+                    //var data = response.success.data;
+
+                    //Assign vars
+                    CurrentPage = parseInt(response.currentPage);
+                    HasNext = response.hasNext;
+                    HasPrev = response.hasPrevious;
+                    TotalPages = parseInt(response.totalPages);
+                    //////////////
+
+
+                    console.log("seeee");
+                    $("#posts").html("");
+
+                    html = `<div class="container-fluid header-section">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="post-type">
+                                       Recent Posts
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="container-fluid">
+
+                       <div class="row mt-5">
+                `;
+
+                    for (var i = 0; i < response.postsValues.length; i++) {
+                        html += `
+ 
+
+                     <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card border-0 shadow-lg pt-5 my-5 position-relative">
+                        <div class="card-body p-4">
+                            <div class="member-profile position-absolute w-100 text-center"> <img
+                                    class="rounded-circle mx-auto d-inline-block shadow-sm"
+                                    src="https://bootdey.com/img/Content/avatar/avatar8.png" alt=""></div>
+                            <div class="card-text mb-4">
+                                <h5 class="member-name mb-0 text-center  font-weight-bold">Jean Torres</h5>
+
+                            </div>
+                            <div class="post-time">
+                                <span class="post__minutes">
+                                    2 min read
+                                </span>
+                                <time class="post__date" datetime="2020-11-11">`+ response.postsValues[i].createdAt + `</time>
+                            </div>
+
+                            
+                            
+                                <a class="card-title post-title" href="https://localhost:5001/Post/ShowPostBySlug?Slug=`+ response.postsValues[i].slug + `">` + response.postsValues[i].title + `</a>
+
+				 <h6 class="card-subtitle mb-2 text-muted post-inside">
+                                `+ response.postsValues[i].summary + `
+                            </h6>
+                        </div>
+                        <div class="card-footer theme-bg-primary border-0 mb-4 text-center">
+
+                            <a href="#" class="p-tag">
+                                Work
+                            </a>
+
+                            <a href="#" class="p-tag">
+                                Notes
+                            </a>
+                        </div>
+                    </div>
+                </div>
+         
+          
+
+                `;
+                    }
+
+                    html += " </div>";
+
+                    $("#posts").html(html);
+                    console.log(response);
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+
+        }
+
+
+    })
+
+</script>
+

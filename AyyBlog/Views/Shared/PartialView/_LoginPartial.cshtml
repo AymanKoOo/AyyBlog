@@ -1,0 +1,42 @@
+﻿@model AyyBlog.ViewModel.LoginRegVM
+
+@{ 
+    var returnUrl = ViewData["ReturnUrl"] as string;
+    returnUrl = System.Net.WebUtility.UrlEncode(returnUrl);
+}
+    <div class="heading">
+
+        <div class="titlee">
+            LOGIN
+        </div>
+
+        <p>
+            If you have an account with us, please log in.
+        </p>
+
+    </div>
+
+
+    <form asp-controller="Authentication" asp-action="Login" method="post">
+        <div asp-validation-summary="All"></div>
+
+        <input asp-for="email" class="form-control" placeholder="email" />
+        <span asp-validation-for="email" class="text-danger"></span>
+
+        <input asp-for="password" class="form-control" placeholder="password" />
+        <span asp-validation-for="password" class="text-danger"></span>
+
+        <div class="form-footer">
+
+            <button class="p-tag btn-auth" type="submit">
+                LOGIN
+            </button>
+
+            <a class="forget-pass" href="#">
+                Forgot your password?
+            </a>
+
+        </div>
+
+    </form>
+

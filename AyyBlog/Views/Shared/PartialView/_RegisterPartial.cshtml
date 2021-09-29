@@ -1,0 +1,104 @@
+﻿@model AyyBlog.ViewModel.LoginRegVM
+
+<div class="heading">
+
+    <div class="titlee">
+        CREATE AN ACCOUNT
+    </div>
+
+    <p>
+        By creating an account with our store, you will be able to move through the checkout process faster, store multiple shipping addresses, view and track your orders in your account and more.
+    </p>
+
+</div>
+
+
+@using (Html.BeginForm("Register", "Authentication", FormMethod.Post))
+{
+    <div asp-validation-summary="All"></div>
+
+
+    <input asp-for="userName" id="userName" class="form-control" placeholder="User Name" />
+    <span asp-validation-for="userName" id="error-userName" class="text-danger"></span>
+
+
+    <h2 class="titlee mb-4 mt-5">Login information</h2>
+
+    <input id="emaill" asp-for="email" class="form-control" placeholder="email" />
+    <span asp-validation-for="email" id="error-div" class="text-danger"></span>
+
+
+    <input asp-for="password" class="form-control" placeholder="Password" />
+    <span asp-validation-for="password" class="text-danger"></span>
+
+    <input asp-for="confirmPassword" class="form-control" placeholder="repeat Password" />
+    <span asp-validation-for="confirmPassword" class="text-danger"></span>
+
+
+    <div class="form-footer">
+
+        <button class="p-tag btn-auth" type="submit">
+            Register
+        </button>
+    </div>
+
+}
+
+<script>
+    $("#userName").change(function () {
+        var userName = $("#userName").val();
+
+        $.ajax({
+            type: "GET",
+            url: "https://localhost:5001/Authentication/IsUserNameExist/" + userName + "",
+            success: function (response) {
+
+                if (response == true) {
+                    $("#error-userName").append("User Name is Used");
+                }
+                else {
+                    $("#error-userName").append("");
+                }
+            },
+            failure: function (response) {
+
+            },
+            error: function (response) {
+
+            }
+        });
+
+    });
+
+    //Check if email is found
+    $("#emaill").change(function () {
+        var email = $("#emaill").val();
+
+        $.ajax({
+            type: "GET",
+            url: "https://localhost:5001/Authentication/IsEmailExist/" + email + "",
+            success: function (response) {
+
+                if (response == true) {
+                    $("#error-div").append("Email is Used");
+                }
+                else {
+                    $("#error-div").append("");
+                }
+            },
+            failure: function (response) {
+
+            },
+            error: function (response) {
+
+            }
+        });
+
+    });
+
+
+    //Check if user name is found
+
+
+    //Check if user name is found
+</script>
