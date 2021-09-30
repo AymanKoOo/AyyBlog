@@ -17,7 +17,7 @@
     </div>
 
 
-    <form asp-controller="Authentication" asp-action="Login" method="post">
+    <form asp-controller="Authentication" asp-action="Login" asp-route-returnurl="@ViewData["returnUrl"]"  method="post">
         <div asp-validation-summary="All"></div>
 
         <input asp-for="email" class="form-control" placeholder="email" />

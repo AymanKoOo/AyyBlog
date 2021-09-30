@@ -32,13 +32,15 @@ namespace AyyBlog
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllersWithViews();
 
+            //  services.AddDbContext<DataContext>(options => options.UseLazyLoadingProxies().UseSqlServer(configuration.GetConnectionString("Ayblog")));
             services.AddDbContext<DataContext>(options => options.UseSqlServer(configuration.GetConnectionString("Ayblog")));
 
 
-        
-            
-            services.AddIdentity<ApplicationUser, ApplicationRole>(opt => {
+
+            services.AddIdentity<ApplicationUser, ApplicationRole>(opt =>
+            {
                 opt.User.RequireUniqueEmail = true;
                 opt.Password.RequiredLength = 6;
                 opt.Password.RequireDigit = false;
@@ -51,23 +53,38 @@ namespace AyyBlog
                 //options.Lockout.MaxFailedAccessAttempts = 5;
                 //options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
             })
-               .AddEntityFrameworkStores<DataContext>()
-               .AddDefaultTokenProviders();
+               .AddEntityFrameworkStores<DataContext>();
+            //.AddDefaultTokenProviders();
 
-            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
-            //options =>
+            services.AddAuthentication(options =>
+            {
+             options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+             options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+             options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
+            }).AddCookie(options =>
+            {
+                options.LoginPath = "/Auth";
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+            }
+            );
+
+      
+            //services.AddAuthentication(options =>
+            //{
+            //    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
+            //}).AddCookie(options =>
             //{
             //    options.LoginPath = "/Authentication/Auth";
-            //}
-            //);
-            services.AddAuthentication("CookieAuthentication")
-               .AddCookie("CookieAuthentication", config =>
-               {
-                   config.Cookie.Name = "UserLoginCookie";
-                   config.LoginPath = "/Authentication/Auth";
-               });
+            //    options.Cookie.HttpOnly = true;
+            //    options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+            //    options.SlidingExpiration = true;
+            //});
 
-            services.AddControllersWithViews();
+
 
             services.AddAutoMapper(typeof(Startup));
             ///Intailize MVc///
@@ -106,12 +123,13 @@ namespace AyyBlog
 
             // Ensure the following middleware are in the order shown
             app.UseRouting();
+            app.UseCookiePolicy();
 
             app.UseAuthentication();
             app.UseAuthorization();
             //call seeding//
             MyIdentityDataInitializer ob = new MyIdentityDataInitializer(_manager, _roleManager);
-            ob.SeedData();
+           // ob.SeedData();
 
             app.UseEndpoints(endpoints =>
             {

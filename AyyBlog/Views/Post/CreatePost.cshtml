@@ -5,7 +5,7 @@
 }
 
 
-<script src="~/ckeditor5-build-classic/ckeditor.js"></script>
+<script src="~/ckeditor/ckeditor.js"></script>
 
 <section>
 
@@ -41,7 +41,7 @@
 </section>
 
 <script>
-   class MyUploadAdapter {
+   @*class MyUploadAdapter {
         constructor(loader) {
             // The file loader instance to use during the upload. It sounds scary but do not
             // worry — the loader will be passed into the adapter later on in this guide.
@@ -141,20 +141,30 @@
             // Configure the URL to the upload script in your back-end here!
             return new MyUploadAdapter(loader);
         };
-    }
+    }*@
 
   
-    ClassicEditor
-        .create(document.querySelector('#mytextarea'),
-            {
-                language: 'es', ckfinder: { uploadUrl: '/Post/CreatePost' },
+    //ClassicEditor
+    //    .create(document.querySelector('#mytextarea'),
+    //        {
+    //            language: 'es', ckfinder: { uploadUrl: '/Post/CreatePost' },
 
-               
-            })
+    //        })
        
-        .catch(error => { console.error(error); });
+    //    .catch(error => { console.error(error); });
 
-   
+    ClassicEditor
+        .create(document.querySelector('#mytextarea'), {
+
+             language: 'es', ckfinder: { uploadUrl: '/Post/CreatePost' },
+
+        })
+        .then(editor => {
+            console.log('Editor was initialized', editor);
+        })
+        .catch(err => {
+            console.error(err.stack);
+        });
     ClassicEditor.execute('fontColor', { value: 'rgb(30, 188, 97)' });
    
 </script>

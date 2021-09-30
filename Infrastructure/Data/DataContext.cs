@@ -21,6 +21,12 @@ namespace Infrastructure.Data
 
             builder.Entity<post_tag>().HasKey(sc => new { sc.postId, sc.tagId });
 
+           // builder.Entity<Post>()
+           //.HasOne(p => p.applicationUser)
+           //.WithMany(b => b.posts)
+           //.OnDelete(DeleteBehavior.Cascade)
+           //.IsRequired()
+           //.HasForeignKey(p => p.authorID);
         }
 
         public DbSet<Post> post { get; set; }

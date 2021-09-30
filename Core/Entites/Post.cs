@@ -1,6 +1,8 @@
 ﻿using Core.Entites.Base;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
 using System.Text;
 
@@ -12,11 +14,13 @@ namespace Core.Entites
         public string Slug { get; set; }
 
         //Foreign Key//
-        public string authorID { get; set; }
-        public ApplicationUser applicationUser { get; set; }
+        public  ApplicationUser applicationUser { get; set; }
+
         public string picture { get; set; }
 
         public bool trending { get; set; }
+
+        public bool visible { get; set; }
 
         public string title { get; set; }
 

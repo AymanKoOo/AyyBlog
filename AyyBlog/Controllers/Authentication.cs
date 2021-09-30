@@ -52,7 +52,14 @@ namespace AyyBlog.Controllers
         [HttpGet("/Auth")]
         public IActionResult Auth(string returnUrl)
         {
-            ViewData["ReturnUrl"] = returnUrl;
+            ViewBag.ReturnUrl = returnUrl;
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                if (Url.IsLocalUrl(ViewBag.ReturnUrl))
+                    return Redirect(ViewBag.ReturnUrl);
+
+                return RedirectToAction("Index", "Home");
+            }
             return View("~/Views/Authentication/LoginRegister.cshtml");
         }
 
@@ -81,25 +88,35 @@ namespace AyyBlog.Controllers
         [HttpPost("/Login")]
         public async Task<IActionResult> Login(LoginRegVM model,string returnUrl)
         {
+            if (returnUrl == null)
+            {
+                returnUrl = "~/Views/Authentication/LoginRegister.cshtml";
+            }
             //Create Default admin//
 
             if (model.email == null || model.password == null)
             {
                 ModelState.AddModelError("name", "Fill the form");
-                return View("~/Views/Authentication/LoginRegister.cshtml", model);
+                return View("home", model);
             }
 
             var user = await userManger.FindByEmailAsync(model.email);
 
             if (user != null&& await userManger.CheckPasswordAsync(user,model.password))
             {
+
+                var userObj = unitOfWork.Admin.GetUserObj(model.email);
+
                 var claims = new List<Claim>();
-                claims.Add(new Claim("Email", model.email));
+                claims.Add(new Claim("Email", userObj.Email));
+                claims.Add(new Claim("UserName", userObj.UserName));
+                claims.Add(new Claim("About", userObj.About));
+
                 claims.Add(new Claim(ClaimTypes.NameIdentifier, model.email));
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                 await HttpContext.SignInAsync(claimsPrincipal);
-                return RedirectToAction("aa", "Authentication");
+                return Redirect(returnUrl);
             }
             else
             {
@@ -112,7 +129,7 @@ namespace AyyBlog.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
-            return Ok();
+            return RedirectToAction("Index", "Home");
         }
 
 

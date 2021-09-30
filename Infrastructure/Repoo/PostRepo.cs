@@ -3,6 +3,7 @@ using Core.Entites;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Repoo.Base;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,14 +26,20 @@ namespace Infrastructure.Repoo
             model.Slug= slugUrl;
             dataContext.post.Add(model);
         }
-        public IQueryable<Post> FindAll()
-        {
-            return dataContext.Set<Post>();
-        }
-
         public Post GetPostBySlug(string slug)
         {
             return dataContext.post.FirstOrDefault(m => m.Slug == slug);
+        }
+
+
+        /// ///        /// ///        /// ///        /// ///        /// ///
+        public IQueryable<Post> FindAll()
+        {
+            //  dataContext.post.Include(a => a.applicationUser);
+
+            return dataContext.post
+                       .Where(x=>x.visible==true)
+                       .Include(s => s.applicationUser);
         }
 
         public PagedList<Post> GetPosts(int pageSize, int pageNumber)
@@ -42,6 +49,20 @@ namespace Infrastructure.Repoo
             pageSize);
         }
 
-        
+        /// ///        /// ///        /// ///        /// ///        /// ///
+
+        public IQueryable<Post> FindSome(string email)
+        {
+            return dataContext.post
+                     .Where(a => a.applicationUser.Email == email)
+                     .Include(s => s.applicationUser);
+        }
+
+        public PagedList<Post> GetUserPosts(int pageSize, int pageNumber,string email)
+        {
+            return PagedList<Post>.ToPagedList(FindSome(email).OrderBy(on => on.title),
+            pageNumber,
+            pageSize);
+        }
     }
 }

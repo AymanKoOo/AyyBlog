@@ -3,36 +3,65 @@
 *@
 @{
 }
-<div class="hero-page">
 
-    <div class="mid-text">
-        <div class="word">
-            <span class="p">Ay</span><span class="n">Blog</span>
+<!----------Profile Page----------------->
+<section>
+
+    <div class="profile-author">
+
+        <div class="author-pic-profile">
+
+            <img 
+                 src="https://bootdey.com/img/Content/avatar/avatar8.png" alt="">
         </div>
-        <h5>Coding topics , thoughts and any</h5>
+
+        <div class="author-name">
+            @User.FindFirst("UserName").Value;
+        </div>
+
+        <div class="author-bio">
+            <h2>
+                @User.FindFirst("About").Value;
+            </h2>
+        </div>
+
+        <div class="author-socialmedia">
+            <i class="fab fa-twitter"></i>
+            <i class="fab fa-facebook-square"></i>
+            <i class="fas fa-chart-bar"></i>
+            <div id="posts-num">
+            </div>
+        </div>
+
+        <div class="author-numberPosts">
+
+        </div>
     </div>
 
-</div>
+
+
+</section>
+<!----------Posts ----------------->
+
 
 <section id="posts">
 </section>
+<!---------- Load More ----------------->
 
 <section id="select-page">
 
 
-        <div class="container  control-btn">
-            <div class="col-md-12 text-center">
+    <div class="container  control-btn">
+        <div class="col-md-12 text-center">
 
-                <button class="prev-btn stop">Previous</button>
+            <button class="prev-btn stop">Previous</button>
 
-                <button class="next-btn go">Next</button>
+            <button class="next-btn go">Next</button>
 
-            </div>
         </div>
+    </div>
 
 </section>
-
-
 
 <script>
 
@@ -41,15 +70,15 @@
     //posts.HasNext, posts.HasPrevious  check
     $(function () {
 
-        var CurrentPage ,
+        var CurrentPage,
             HasNext,
             HasPrev,
             TotalPages = 0,
             pageSize = 4,
-            page=1;
+            page = 1,
+            TotalCount = 0;
 
         getPosts(pageSize, page);
-       
 
 
         $(".prev-btn").on("click", function () {
@@ -84,8 +113,9 @@
                     $(".next-btn").removeClass("go");
                     $(".next-btn").addClass("stop");
                 }
-            }   
+            }
         });
+
 
 
         html = "";
@@ -94,7 +124,7 @@
         function getPosts(pageSize, pageNumber) {
             $.ajax({
                 type: "POST",
-                url: "https://localhost:5001/Post/GetPosts",
+                url: "https://localhost:5001/Profile/GetUserPosts",
                 data: { "pageSize": pageSize, "pageNumber": pageNumber },
                 success: function (response) {
                     //var data = response.success.data;
@@ -104,8 +134,10 @@
                     HasNext = response.hasNext;
                     HasPrev = response.hasPrevious;
                     TotalPages = parseInt(response.totalPages);
+                    TotalCount = parseInt(response.totalCount);
                     //////////////
 
+                    $("#posts-num").append(TotalCount);
 
                     console.log("seeee");
                     $("#posts").html("");
@@ -126,18 +158,52 @@
 
                     for (var i = 0; i < response.postsValues.length; i++) {
                         html += `
- 
+
 
                      <div class="col-12 col-md-6 col-lg-4">
                     <div class="card border-0 shadow-lg pt-5 my-5 position-relative">
                         <div class="card-body p-4">
-                            <div class="member-profile position-absolute w-100 text-center"> <img
-                                    class="rounded-circle mx-auto d-inline-block shadow-sm"
-                                    src="https://bootdey.com/img/Content/avatar/avatar8.png" alt=""></div>
-                            <div class="card-text mb-4">
-                                <h5 class="member-name mb-0 text-center  font-weight-bold">`+ response.postsValues[i].userName+ `</h5>
+                           <div class="control-post  border-0 mb-4 text-center">
 
+                            <div class="continer">
+                                <div class="row">
+
+                                  `;
+
+                        if (response.postsValues[i].visible == true) {
+                            html += `
+                                    <div class="col-sm-4 col-12">
+                                       
+                                    <button class="p-hide">Hide</button>
+
+                                    </div >
+                            `
+                        }
+                        else {
+                            html += `
+                                    <div class="col-sm-4 col-12">
+                                    <button  class="p-show">Show</button>
+
+                                    </div >
+<p id="aa">asdasdasd</p>
+                            `
+                        }
+                        html+=` 
+                                    <div class="col-sm-4 col-12">
+                                        <a href="#" class="p-edit">
+                                            Edit
+                                        </a>
+
+                                    </div>
+                                    <div class="col-sm-4 col-12">
+                                        <a href="#" class="p-delete">
+                                            Delete
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
+
+                        </div>
                             <div class="post-time">
                                 <span class="post__minutes">
                                     2 min read
@@ -145,8 +211,8 @@
                                 <time class="post__date" datetime="2020-11-11">`+ response.postsValues[i].createdAt + `</time>
                             </div>
 
-                            
-                            
+
+
                                 <a class="card-title post-title" href="https://localhost:5001/Post/ShowPostBySlug?Slug=`+ response.postsValues[i].slug + `">` + response.postsValues[i].title + `</a>
 
 				 <h6 class="card-subtitle mb-2 text-muted post-inside">
@@ -165,8 +231,8 @@
                         </div>
                     </div>
                 </div>
-         
-          
+
+
 
                 `;
                     }
@@ -186,6 +252,60 @@
 
         }
 
+        $(".p-show").on("click", function () {
+            console.log("aaa");
+            var slug = $(this).prop("value")
+            showPost(slug);
+        });
+
+        //$(".p-hide").on("click", function () {
+        //    var slug = $(this).prop("value")
+        //    hidepost(slug);
+        //});
+
+        $("#aa").click(function () {
+            console.log("aaa");
+
+        });
+
+        function hidepost(slug) {
+
+            $.ajax({
+                type: "POST",
+                url: "https://localhost:5001/Profile/HidePost",
+                data: { "Postslug": slug },
+                success: function (response) {
+
+                    getPosts(pageSize, page);
+                    console.log("done");
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+
+        function showPost(slug) {
+
+            $.ajax({
+                type: "POST",
+                url: "https://localhost:5001/Profile/ShowPost",
+                data: { "Postslug": slug },
+                success: function (response) {
+                    getPosts(pageSize, page);
+                    console.log("done");
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
 
     })
 

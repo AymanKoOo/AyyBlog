@@ -21,7 +21,20 @@ namespace Web.Mapper
             CreateMap<IEnumerable<LoginRegVM>,IEnumerable<ApplicationUser>>();
             CreateMap<IEnumerable<ApplicationUser>, IEnumerable<LoginRegVM>>();
 
-            CreateMap<List<PostDTO>, List<Post>>();
+            CreateMap<Post, PostHomeDTO>()
+             .ForMember
+              (x => x.UserName,
+              map => map.MapFrom(source => source.applicationUser.UserName))
+
+            .ForMember
+              (e => e.email,
+              map => map.MapFrom(source => source.applicationUser.Email))
+
+             .ForMember
+              (e => e.About,
+              map => map.MapFrom(source => source.applicationUser.About));
+            
+            CreateMap<PostHomeDTO, Post>();
         }
     }
 }

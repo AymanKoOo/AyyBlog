@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Linq;
 namespace Infrastructure.Repoo
 {
     public class AdminRepo : GenericRepo<ApplicationUser>, IAdminRepo
@@ -54,6 +54,18 @@ namespace Infrastructure.Repoo
                 return true;
             }
             return false;
+        }
+
+        public string GetUserId(string email)
+        {
+            var user = _dbcontext.Users.FirstOrDefault(m => m.Email == email);
+
+            return user.Id;
+        }
+
+        public ApplicationUser GetUserObj(string email)
+        {
+            return _dbcontext.Users.FirstOrDefault(m => m.Email == email);
         }
     }
 }

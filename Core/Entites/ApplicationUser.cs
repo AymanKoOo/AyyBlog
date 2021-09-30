@@ -12,8 +12,7 @@ namespace Core.Entites
 
         public string About { get; set; }
 
-
-        public ICollection<Post> posts { get; set; }
+        public  IEnumerable<Post> posts { get; set; }
 
     }
 }

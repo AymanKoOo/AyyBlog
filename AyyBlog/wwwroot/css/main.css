@@ -555,10 +555,7 @@ margin-right: 20px;
 
 .post-time{
   font-size: 12px;
-}
-
-.post__date{
-  color: gray;
+  color:whitesmoke
 }
 
 .post-inside{
@@ -616,8 +613,97 @@ transition: border ease-in 0.2s;
 }
  
 /*** Profile Page....*/
-.profile-author{
-  margin-top: 80px;
+.p-delete {
+    text-decoration: none;
+    margin: 4px 8px;
+    color: gray;
+    border: 2px solid #c9282b;
+    border-radius: 24px;
+    margin-right: 5px;
+    margin: 2px 0;
+    font-size: 27px;
+    padding: 5px;
+    border: 2px solid #2b394e;
+    border-radius: 24px;
+    color: #c9282b;
+    margin-right: 3px;
+    transition: border ease-in 0.2s;
+}
+
+    .p-delete:hover {
+        border: 2px solid #c9282b;
+        color: #c9282b;
+    }
+
+.p-edit {
+    text-decoration: none;
+    margin: 4px 8px;
+    color: gray;
+    border: 2px solid #4ec60b;
+    border-radius: 24px;
+    margin-right: 5px;
+    margin: 2px 0;
+    font-size: 27px;
+    padding: 5px;
+    border: 2px solid #2b394e;
+    border-radius: 24px;
+    color: #4ec60b;
+    margin-right: 3px;
+    transition: border ease-in 0.2s;
+}
+
+    .p-edit:hover {
+        border: 2px solid #4ec60b;
+        color: #4ec60b;
+    }
+
+    .p-hide {
+        text-decoration: none;
+        margin: 4px 8px;
+        color: gray;
+        border-radius: 24px;
+        margin-right: 5px;
+        margin: 2px 0;
+        font-size: 27px;
+        padding: 5px;
+        border: 2px solid gray;
+        border-radius: 24px;
+        color: #f0c33b;
+        margin-right: 3px;
+        transition: border ease-in 0.2s;
+    }
+
+    .p-hide:hover {
+        border: 2px solid #f0c33b;
+       
+        color: #f0c33b;
+      
+    }
+
+.p-show {
+    text-decoration: none;
+    margin: 4px 8px;
+    color: gray;
+    border-radius: 24px;
+    margin-right: 5px;
+    margin: 2px 0;
+    font-size: 27px;
+    padding: 5px;
+    border: 2px solid gray;
+    border-radius: 24px;
+    color:blue;
+    margin-right: 3px;
+    transition: border ease-in 0.2s;
+}
+
+
+    .p-show:hover {
+        border: 2px solid blue;
+        color: blue;
+    }
+.profile-author {
+    margin-top: 80px;
+    color: white;
 }
 .author-pic-profile img{
   width: 130px;

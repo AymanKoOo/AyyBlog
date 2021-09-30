@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace AyyBlog.Controllers
@@ -41,6 +42,7 @@ namespace AyyBlog.Controllers
             return View(slug);
         }
 
+
         [Authorize]
         [HttpGet("CreatePost")]
         public IActionResult CreatePost()
@@ -53,7 +55,10 @@ namespace AyyBlog.Controllers
         public IActionResult CreatePost(PostDTO model)
         {
             if(!ModelState.IsValid) return View(model);
-
+            DateTime todaysDate = DateTime.Today; // returns today's date
+            string Useremail = User.FindFirst("Email").Value;
+           // var user = _userManager.GetUserAsync(HttpContext.User).Result;
+            var userobj = _unitOfWork.Admin.GetUserObj(Useremail);
 
             string fileName = string.Empty;
             if (model.postImg != null)
@@ -64,8 +69,9 @@ namespace AyyBlog.Controllers
                 model.postImg.CopyToAsync(new FileStream(fullPath, FileMode.Create));
                 model.picture = fileName;
                 model.CategoryId = 1;
+                model.applicationUser = userobj;
+                model.createdAt = todaysDate;
             }
-
             var post = _mapper.Map<Post>(model);
             _unitOfWork.Post.AddPost(post);
             _unitOfWork.save();
@@ -81,7 +87,10 @@ namespace AyyBlog.Controllers
                 return BadRequest();
             }
             var posts = _unitOfWork.Post.GetPosts(pageSize, pageNumber);
-            var postsValues = _mapper.Map<List<PostDTO>>(posts.postsData);
+
+          //  var x = posts.postsData.FirstOrDefault(x => x.applicationUser.Email=="aa");
+
+            var postsValues = _mapper.Map<List<PostHomeDTO>>(posts.postsData);
 
             var metadata = new
             {
