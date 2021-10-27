@@ -3,6 +3,7 @@
 *@
 @{
 }
+
 <div class="hero-page">
 
     <div class="mid-text">
@@ -20,15 +21,15 @@
 <section id="select-page">
 
 
-        <div class="container  control-btn">
-            <div class="col-md-12 text-center">
+    <div class="container  control-btn">
+        <div class="col-md-12 text-center">
 
-                <button class="prev-btn stop">Previous</button>
+            <button class="prev-btn stop">Previous</button>
 
-                <button class="next-btn go">Next</button>
+            <button class="next-btn go">Next</button>
 
-            </div>
         </div>
+    </div>
 
 </section>
 
@@ -41,15 +42,15 @@
     //posts.HasNext, posts.HasPrevious  check
     $(function () {
 
-        var CurrentPage ,
+        var CurrentPage,
             HasNext,
             HasPrev,
             TotalPages = 0,
-            pageSize = 4,
-            page=1;
+            pageSize = 1,
+            page = 1;
 
         getPosts(pageSize, page);
-       
+
 
 
         $(".prev-btn").on("click", function () {
@@ -84,7 +85,7 @@
                     $(".next-btn").removeClass("go");
                     $(".next-btn").addClass("stop");
                 }
-            }   
+            }
         });
 
 
@@ -126,47 +127,42 @@
 
                     for (var i = 0; i < response.postsValues.length; i++) {
                         html += `
- 
+
 
                      <div class="col-12 col-md-6 col-lg-4">
                     <div class="card border-0 shadow-lg pt-5 my-5 position-relative">
                         <div class="card-body p-4">
-                            <div class="member-profile position-absolute w-100 text-center"> <img
+                            <div class="member-profile position-absolute w-100 text-center">
+        
+                                <img
                                     class="rounded-circle mx-auto d-inline-block shadow-sm"
-                                    src="https://bootdey.com/img/Content/avatar/avatar8.png" alt=""></div>
+                                    src="/images/UserProfileImage/`+ response.postsValues[i].profilePic + `" alt=""></div>
                             <div class="card-text mb-4">
-                                <h5 class="member-name mb-0 text-center  font-weight-bold">`+ response.postsValues[i].userName+ `</h5>
-
+                                <a  class="member-name mb-0 text-center  font-weight-bold"  href="https://localhost:5001/Profile/SearchUserProfile?Slug=`+ response.postsValues[i].slug + `">` + response.postsValues[i].userName + `</a>
                             </div>
                             <div class="post-time">
-                                <span class="post__minutes">
-                                    2 min read
-                                </span>
                                 <time class="post__date" datetime="2020-11-11">`+ response.postsValues[i].createdAt + `</time>
                             </div>
 
-                            
-                            
+
                                 <a class="card-title post-title" href="https://localhost:5001/Post/ShowPostBySlug?Slug=`+ response.postsValues[i].slug + `">` + response.postsValues[i].title + `</a>
 
-				 <h6 class="card-subtitle mb-2 text-muted post-inside">
+                 <h6 class="card-subtitle mb-2 text-muted post-inside">
                                 `+ response.postsValues[i].summary + `
                             </h6>
                         </div>
                         <div class="card-footer theme-bg-primary border-0 mb-4 text-center">
 
                             <a href="#" class="p-tag">
-                                Work
+                                
+                    `+ response.postsValues[i].category + `
                             </a>
-
-                            <a href="#" class="p-tag">
-                                Notes
-                            </a>
+                          
                         </div>
                     </div>
                 </div>
-         
-          
+
+
 
                 `;
                     }

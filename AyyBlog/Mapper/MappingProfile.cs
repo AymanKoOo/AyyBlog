@@ -18,6 +18,9 @@ namespace Web.Mapper
             CreateMap<ApplicationUser, LoginRegVM>();
             CreateMap<LoginRegVM, ApplicationUser>();
 
+            CreateMap<ApplicationUser, UserDTO>();
+            CreateMap<UserDTO, ApplicationUser>();
+
             CreateMap<IEnumerable<LoginRegVM>,IEnumerable<ApplicationUser>>();
             CreateMap<IEnumerable<ApplicationUser>, IEnumerable<LoginRegVM>>();
 
@@ -25,6 +28,14 @@ namespace Web.Mapper
              .ForMember
               (x => x.UserName,
               map => map.MapFrom(source => source.applicationUser.UserName))
+             
+              .ForMember
+              (x => x.profilePic,
+              map => map.MapFrom(source => source.applicationUser.ProfilePic))
+
+              .ForMember
+              (x => x.Category,
+              map => map.MapFrom(source => source.Category.title))
 
             .ForMember
               (e => e.email,

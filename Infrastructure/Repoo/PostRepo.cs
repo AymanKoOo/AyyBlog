@@ -26,6 +26,11 @@ namespace Infrastructure.Repoo
             model.Slug= slugUrl;
             dataContext.post.Add(model);
         }
+        public void EditPost(Post model)
+        {
+            dataContext.Update(model);
+          
+        }
         public Post GetPostBySlug(string slug)
         {
             return dataContext.post.FirstOrDefault(m => m.Slug == slug);
@@ -39,7 +44,8 @@ namespace Infrastructure.Repoo
 
             return dataContext.post
                        .Where(x=>x.visible==true)
-                       .Include(s => s.applicationUser);
+                       .Include(s => s.applicationUser)
+                       .Include(e => e.Category);
         }
 
         public PagedList<Post> GetPosts(int pageSize, int pageNumber)
@@ -63,6 +69,29 @@ namespace Infrastructure.Repoo
             return PagedList<Post>.ToPagedList(FindSome(email).OrderBy(on => on.title),
             pageNumber,
             pageSize);
+        }
+
+        public bool DeletePostBySlug(string slug)
+        {
+            var post = GetPostBySlug(slug);
+            if (post != null)
+            {
+
+                var result = dataContext.post.Remove(post);
+                if (result != null)
+                {
+                    return true;
+                }
+                else return false;
+            }
+            else return false;
+        }
+
+        public bool TitleExists(string title)
+        {
+           var exists = dataContext.post.Any(m => m.title == title);
+            if (exists) return true;
+            else return false;
         }
     }
 }

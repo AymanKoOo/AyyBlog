@@ -67,5 +67,15 @@ namespace Infrastructure.Repoo
         {
             return _dbcontext.Users.FirstOrDefault(m => m.Email == email);
         }
+
+        
+        public ApplicationUser GetUserObjBySlug(string slug)
+        {
+           return _dbcontext.post.Where(m => m.Slug == slug).Include(a => a.applicationUser).Select(item=>new ApplicationUser
+           {
+              UserName = item.applicationUser.UserName,
+              Email = item.applicationUser.Email
+           }).FirstOrDefault();
+        }
     }
 }

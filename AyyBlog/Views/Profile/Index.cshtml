@@ -11,8 +11,7 @@
 
         <div class="author-pic-profile">
 
-            <img 
-                 src="https://bootdey.com/img/Content/avatar/avatar8.png" alt="">
+            <img src="https://bootdey.com/img/Content/avatar/avatar8.png" alt="">
         </div>
 
         <div class="author-name">
@@ -118,6 +117,7 @@
 
 
 
+
         html = "";
         $("#posts").html(html);
 
@@ -166,15 +166,15 @@
                            <div class="control-post  border-0 mb-4 text-center">
 
                             <div class="continer">
-                                <div class="row">
+                                <div  class="row">
 
                                   `;
 
                         if (response.postsValues[i].visible == true) {
                             html += `
                                     <div class="col-sm-4 col-12">
-                                       
-                                    <button class="p-hide">Hide</button>
+
+                                    <button class="p-hide" value="`+ response.postsValues[i].slug + `">Hide</button>
 
                                     </div >
                             `
@@ -182,23 +182,21 @@
                         else {
                             html += `
                                     <div class="col-sm-4 col-12">
-                                    <button  class="p-show">Show</button>
+                                    <button  class="p-show" value="`+ response.postsValues[i].slug + `">Show</button>
 
                                     </div >
-<p id="aa">asdasdasd</p>
                             `
                         }
-                        html+=` 
+                        html += `
                                     <div class="col-sm-4 col-12">
-                                        <a href="#" class="p-edit">
-                                            Edit
-                                        </a>
+
+                                     <a class="p-edit"  href="https://localhost:5001/Post/EditPost?Slug=`+ response.postsValues[i].slug + `">Edit</a>
 
                                     </div>
                                     <div class="col-sm-4 col-12">
-                                        <a href="#" class="p-delete">
-                                            Delete
-                                        </a>
+
+                                    <button  class="p-delete" value="`+ response.postsValues[i].slug + `">Delete</button>
+
                                     </div>
                                 </div>
                             </div>
@@ -215,7 +213,7 @@
 
                                 <a class="card-title post-title" href="https://localhost:5001/Post/ShowPostBySlug?Slug=`+ response.postsValues[i].slug + `">` + response.postsValues[i].title + `</a>
 
-				 <h6 class="card-subtitle mb-2 text-muted post-inside">
+                 <h6 class="card-subtitle mb-2 text-muted post-inside">
                                 `+ response.postsValues[i].summary + `
                             </h6>
                         </div>
@@ -252,21 +250,22 @@
 
         }
 
-        $(".p-show").on("click", function () {
-            console.log("aaa");
-            var slug = $(this).prop("value")
-            showPost(slug);
-        });
+        ///Control buttons///
 
-        //$(".p-hide").on("click", function () {
-        //    var slug = $(this).prop("value")
-        //    hidepost(slug);
-        //});
-
-        $("#aa").click(function () {
-            console.log("aaa");
-
-        });
+        document.getElementById('posts')
+            .addEventListener('click', event => { // Step 2
+                console.log(event.target.className);
+                if (event.target.className == "p-hide") {
+                    hidepost(event.target.getAttribute('value'));
+                }
+                else if (event.target.className == "p-show") {
+                    showPost(event.target.getAttribute('value'));
+                }
+                else if (event.target.className == "p-delete") {
+                    deletePost(event.target.getAttribute('value'));
+                }
+             
+            });
 
         function hidepost(slug) {
 
@@ -307,6 +306,27 @@
             });
         }
 
+      
+        function deletePost(slug) {
+
+            $.ajax({
+                type: "POST",
+                url: "https://localhost:5001/Profile/DeletePost",
+                data: { "Postslug": slug },
+                success: function (response) {
+                    getPosts(pageSize, page);
+                    console.log("done");
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+
+
+        }
     })
 
 </script>

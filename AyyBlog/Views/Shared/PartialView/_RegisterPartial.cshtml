@@ -13,92 +13,127 @@
 </div>
 
 
-@using (Html.BeginForm("Register", "Authentication", FormMethod.Post))
-{
-    <div asp-validation-summary="All"></div>
+    <form asp-controller="Authentication" asp-action="Register" enctype="multipart/form-data" method="post">
+        <div asp-validation-summary="All"></div>
+        <div id="error" style="color:red"></div>
+        <br />
 
 
-    <input asp-for="userName" id="userName" class="form-control" placeholder="User Name" />
-    <span asp-validation-for="userName" id="error-userName" class="text-danger"></span>
+        <input type="file" accept="image/*" id="uImg" name="UserImgF" asp-for="UserImgF" />
+        <span asp-validation-for="UserImgF" class="text-danger"></span>
 
 
-    <h2 class="titlee mb-4 mt-5">Login information</h2>
-
-    <input id="emaill" asp-for="email" class="form-control" placeholder="email" />
-    <span asp-validation-for="email" id="error-div" class="text-danger"></span>
+        <input asp-for="userName" id="userName" class="form-control" placeholder="User Name" />
+        <span asp-validation-for="userName" id="error-userName" class="text-danger"></span>
 
 
-    <input asp-for="password" class="form-control" placeholder="Password" />
-    <span asp-validation-for="password" class="text-danger"></span>
+        <h2 class="titlee mb-4 mt-5">Login information</h2>
 
-    <input asp-for="confirmPassword" class="form-control" placeholder="repeat Password" />
-    <span asp-validation-for="confirmPassword" class="text-danger"></span>
-
-
-    <div class="form-footer">
-
-        <button class="p-tag btn-auth" type="submit">
-            Register
-        </button>
-    </div>
-
-}
-
-<script>
-    $("#userName").change(function () {
-        var userName = $("#userName").val();
-
-        $.ajax({
-            type: "GET",
-            url: "https://localhost:5001/Authentication/IsUserNameExist/" + userName + "",
-            success: function (response) {
-
-                if (response == true) {
-                    $("#error-userName").append("User Name is Used");
-                }
-                else {
-                    $("#error-userName").append("");
-                }
-            },
-            failure: function (response) {
-
-            },
-            error: function (response) {
-
-            }
-        });
-
-    });
-
-    //Check if email is found
-    $("#emaill").change(function () {
-        var email = $("#emaill").val();
-
-        $.ajax({
-            type: "GET",
-            url: "https://localhost:5001/Authentication/IsEmailExist/" + email + "",
-            success: function (response) {
-
-                if (response == true) {
-                    $("#error-div").append("Email is Used");
-                }
-                else {
-                    $("#error-div").append("");
-                }
-            },
-            failure: function (response) {
-
-            },
-            error: function (response) {
-
-            }
-        });
-
-    });
+        <input id="emaill" asp-for="email" class="form-control" placeholder="email" />
+        <span asp-validation-for="email" id="error-div" class="text-danger"></span>
 
 
-    //Check if user name is found
+        <input asp-for="password" class="form-control" placeholder="Password" />
+        <span asp-validation-for="password" class="text-danger"></span>
+
+        <input asp-for="confirmPassword" class="form-control" placeholder="repeat Password" />
+        <span asp-validation-for="confirmPassword" class="text-danger"></span>
 
 
-    //Check if user name is found
-</script>
+        <div class="form-footer">
+
+            <button class="p-tag btn-auth" type="submit">
+                Register
+            </button>
+        </div>
+
+       </form>>
+
+        <script>
+
+            $(function () {
+                $("#sumbit").click(function () {
+                    $("#error").html("");
+
+                    if ($("#uImg").val() == "") {
+
+                        $("#error").append("Please Fill the Missing");
+                        return false;
+                    }
+
+                    if ($("#uImg").val() != "") {
+                        var filename = document.getElementById("img").value;
+                        var extentionImg = filename.substr(filename.lastIndexOf('.') + 1)
+                        var validExtentions = ['jpg', 'png', 'gif', 'bmp'];
+                        if ($.inArray(extentionImg, validExtentions) == -1) {
+                            $("#errorr").append("Please Fill the Missing");
+                            return false;
+                        }
+
+                        var myFileSize = document.getElementById("img").files[0].size / 1024 / 1024;
+                        if (myFileSize > 2) {
+                            $("#uImg").append("Please Fill the Missing");
+                            return false;
+                        }
+                    }
+                });
+            });
+
+
+            $("#userName").change(function () {
+                var userName = $("#userName").val();
+
+                $.ajax({
+                    type: "GET",
+                    url: "https://localhost:5001/Authentication/IsUserNameExist/" + userName + "",
+                    success: function (response) {
+
+                        if (response == true) {
+                            $("#error-userName").append("User Name is Used");
+                        }
+                        else {
+                            $("#error-userName").append("");
+                        }
+                    },
+                    failure: function (response) {
+
+                    },
+                    error: function (response) {
+
+                    }
+                });
+
+            });
+
+            //Check if email is found
+            $("#emaill").change(function () {
+                var email = $("#emaill").val();
+
+                $.ajax({
+                    type: "GET",
+                    url: "https://localhost:5001/Authentication/IsEmailExist/" + email + "",
+                    success: function (response) {
+
+                        if (response == true) {
+                            $("#error-div").append("Email is Used");
+                        }
+                        else {
+                            $("#error-div").append("");
+                        }
+                    },
+                    failure: function (response) {
+
+                    },
+                    error: function (response) {
+
+                    }
+                });
+
+            });
+
+
+            //Check if user name is found
+
+
+            //Check if user name is found
+        </script>

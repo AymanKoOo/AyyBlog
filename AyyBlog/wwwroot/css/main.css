@@ -218,30 +218,27 @@ margin-top:70px;
   margin-top: 50px;
   margin-left: 20px;
 }
-.trend a{
-
-  text-decoration: none;
-  color: #2b394e;
-  padding: 10px;
-  background-color: #f0f0f0; 
-  border-radius: 20%;
-  text-transform:uppercase;
-  word-spacing: 11px;
-  font-size: 10px;
+.trend a {
+    text-decoration: none;
+    color: gray;
+    padding: 10 px;
+    border-radius: 20%;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+.trend-pic {
+    border-radius: 6%;
+    width: 100%;
+    height: 550px;
+    object-fit: cover;
+    object-position: 50% 50%;
+    border: 1px solid #b1202c;
 }
 
-.trend-pic{
-  border-radius: 6%;
-  width:100%;
-  height:550px;
-  object-fit:cover;
-  object-position:50% 50%;
-}
-
-.trend-header{
-  margin-top: 25px;
-
-  font-size: 50px;
+.trend-header {
+    margin-top: 25px;
+    color: #c11b29;
+    font-size: 50px;
 }
 
 .th-break{
@@ -250,8 +247,9 @@ margin-top:70px;
  width: 100px;
 }
 
-.trend-body{
-  margin-top: 10px;
+.trend-body {
+    margin-top: 10px;
+    color: white;
 }
 
 .trend-post-author{
@@ -577,11 +575,11 @@ margin-right: 20px;
 }
 
 
-.post-author .author-name{
+.post-author .author-name {
     font-size: 12px;
-    margin-top: 8px;
-    margin-left: 10px;
+    margin-top: 8 px;
     transition: color ease-in 0.2s;
+    color: white;
 }
 
 .post-author .author-name:hover{
@@ -1051,15 +1049,44 @@ input {
 .post-blog {
     margin-top: 60px;
 }
-    .post-blog p, h1, h2, h3 {
-        color: white;
-        margin-top: 5px;
+
+    .post-blog h1, h2, h3, h5, h4, p, a {
         color: rgb(223, 219, 219);
-        font-size: 18px;
-        font-weight: lighter !important;
-        font-family: Times, Times New Roman, serif !important;
+        font-family: 'ForoSans-Medium', sans-serif;
     }
 
+    .post-blog a {
+        color: #ca3e3e;
+    }
+
+    .post-blog h1 {
+        font-size: 200%;
+        font-weight: 800 !important;
+        margin-bottom: 40px;
+    }
+
+    .post-blog h2 {
+        margin-bottom: 20px;
+        font-size: 150%;
+        text-decoration: underline #ca3e3e;
+    }
+
+    .post-blog p {
+        margin-bottom: 20px;
+    }
+
+    .post-blog li {
+        margin-bottom: 20px;
+    }
+
+    .post-blog blockquote {
+        background-color: #0f0e15;
+        display: inline-block;
+    }
+        .post-blog blockquote p {
+            color: #ca3e3e;
+         
+        }
 /*Auth*/
 .auth{
     color:white;
@@ -1070,4 +1097,13 @@ input {
     background-color:black;
 
 
+}
+
+/*prfile*/
+
+
+#output {
+    width:200px;
+    height:200px;
+    margin-top:20px;
 }

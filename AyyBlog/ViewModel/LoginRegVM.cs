@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,6 +11,11 @@ namespace AyyBlog.ViewModel
     {
         [Required]
         public string userName { get; set; }
+
+        [Required]
+        public IFormFile UserImgF { get; set; }
+
+        public string ProfilePic { get; set; }
 
         [Required]
         [StringLength(256), DataType(DataType.EmailAddress)]

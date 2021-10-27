@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
 using System.Text;
@@ -14,18 +15,23 @@ namespace Core.Entites
         public string Slug { get; set; }
 
         //Foreign Key//
+        public string applicationUserId { get; set; }
         public  ApplicationUser applicationUser { get; set; }
 
+        [Required]
         public string picture { get; set; }
 
         public bool trending { get; set; }
 
         public bool visible { get; set; }
 
+        [Required]
         public string title { get; set; }
-
-        public string summary { get; set; }
         
+        [Required]
+        public string summary { get; set; }
+
+        [Required]
         public string content { get; set; }
 
         public DateTime createdAt { get; set; }

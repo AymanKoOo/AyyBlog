@@ -5,11 +5,13 @@ using Core.Interfaces.Base;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -25,17 +27,18 @@ namespace AyyBlog.Controllers
         private readonly IMapper mapper;
         private readonly RoleManager<ApplicationRole> roleManager;
         private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly IWebHostEnvironment environment;
 
-        public Authentication(UserManager<ApplicationUser> userManger, IUnitOfWork unitOfWork, IMapper mapper, RoleManager<ApplicationRole> roleManager, SignInManager<ApplicationUser> signInManager)
+        public Authentication(UserManager<ApplicationUser> userManger, IWebHostEnvironment environment, IUnitOfWork unitOfWork, IMapper mapper, RoleManager<ApplicationRole> roleManager, SignInManager<ApplicationUser> signInManager)
         {
             this.userManger = userManger;
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
             this.roleManager = roleManager;
             this.signInManager = signInManager;
+            this.environment = environment;
+
         }
-
-
 
         public IActionResult Index()
         {
@@ -68,7 +71,16 @@ namespace AyyBlog.Controllers
         {
             if (model == null && model.email == null && model.password == null && model.userName==null) return View("~/Views/Authentication/LoginRegister.cshtml", model);
 
-
+            string fileName = string.Empty;
+            if (model.UserImgF != null)
+            {
+                string uploads = Path.Combine(environment.WebRootPath, "images\\UserProfileImage");
+                fileName = Guid.NewGuid() + Path.GetExtension(model.UserImgF.FileName).ToLower();
+                string fullPath = Path.Combine(uploads, fileName);
+                await model.UserImgF.CopyToAsync(new FileStream(fullPath, FileMode.Create));
+                model.ProfilePic = fileName;
+            }
+             
             var user = mapper.Map<ApplicationUser>(model);
 
             var result = await userManger.CreateAsync(user, model.password);

@@ -9,9 +9,12 @@ namespace AyyBlog.ViewModel
     public class PostHomeDTO
     {
         public string UserName { get; set; }
+
+        public string profilePic { get; set; }
         public string email { get; set; }
         public string About { get; set; }
 
+        public string Category { get; set; }
         public bool visible { get; set; }
 
         public string picture { get; set; }

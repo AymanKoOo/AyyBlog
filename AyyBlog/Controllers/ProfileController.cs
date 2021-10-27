@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static Infrastructure.Repoo.AdminRepo;
 
 namespace AyyBlog.Controllers
 {
@@ -75,6 +76,18 @@ namespace AyyBlog.Controllers
             return Ok();
         }
 
+        [HttpPost("DeletePost")]
+        public IActionResult DeletePost(string Postslug)
+        {
+            var resposne = unitOfWork.Post.DeletePostBySlug(Postslug);
+            unitOfWork.save();
+            if (resposne == true)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+
         [HttpPost("ShowPost")]
         public IActionResult ShowPost(string Postslug)
         {
@@ -89,5 +102,51 @@ namespace AyyBlog.Controllers
         }
 
 
+        /// <summary>
+        /// //////////
+        /// </summary>
+        /// 
+        [HttpGet("SearchUserProfile")]
+        public IActionResult SearchUserProfile(string Slug)
+        {
+            var user = unitOfWork.Admin.GetUserObjBySlug(Slug);
+
+            var userView = mapper.Map<UserDTO>(user);
+
+            if (user.UserName == null && user.Email == null)
+            {
+                return BadRequest();
+            }
+
+            return View(userView);
+        }
+
+        [HttpPost("SearchUserProfile")]
+        public IActionResult SearchUserProfile(int pageSize, int pageNumber,string email)
+        {
+            string Useremail = email;
+
+            if (pageSize < 1 || pageNumber < 1)
+            {
+                return BadRequest();
+            }
+            var posts = unitOfWork.Post.GetUserPosts(pageSize, pageNumber, Useremail);
+
+            //  var x = posts.postsData.FirstOrDefault(x => x.applicationUser.Email=="aa");
+
+            var postsValues = mapper.Map<List<PostHomeDTO>>(posts.postsData);
+
+            var metadata = new
+            {
+                postsValues,
+                posts.TotalCount,
+                posts.PageSize,
+                posts.CurrentPage,
+                posts.TotalPages,
+                posts.HasNext,
+                posts.HasPrevious
+            };
+            return Ok(metadata);
+        }
     }
 }

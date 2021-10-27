@@ -54,11 +54,19 @@ namespace AyyBlog.Controllers
         [HttpPost("CreatePost")]
         public IActionResult CreatePost(PostDTO model)
         {
-            if(!ModelState.IsValid) return View(model);
+            if (!ModelState.IsValid)
+            {
+                return View(model); 
+            }
             DateTime todaysDate = DateTime.Today; // returns today's date
             string Useremail = User.FindFirst("Email").Value;
            // var user = _userManager.GetUserAsync(HttpContext.User).Result;
             var userobj = _unitOfWork.Admin.GetUserObj(Useremail);
+
+            if (_unitOfWork.Post.TitleExists(model.title))
+            {
+                model.title += model.title + "1";
+            };
 
             string fileName = string.Empty;
             if (model.postImg != null)
@@ -78,6 +86,59 @@ namespace AyyBlog.Controllers
             return View();
         }
 
+        
+        [Authorize]
+        [HttpGet("EditPost")]
+        public IActionResult EditPost(string slug)
+        {
+            if (slug == null)
+            {
+                return BadRequest();
+            }
+            var post  = _unitOfWork.Post.GetPostBySlug(slug);
+            var postDto = _mapper.Map<PostDTO>(post);
+
+            if (post == null)
+            {
+                return BadRequest();
+            }
+            return View(postDto);
+        }
+
+        [Authorize]
+        [HttpPost("EditPost")]
+        public IActionResult EditPost(PostDTO model)
+        {
+            if (!ModelState.IsValid) return View(model);
+            var post = _unitOfWork.Post.GetPostBySlug(model.Slug);
+            DateTime todaysDate = DateTime.Today; // returns today's date
+
+            string fileName = string.Empty;
+            if (model.postImg != null)
+            {
+                System.IO.File.Delete(environment.WebRootPath+"/uploads/"+post.picture);
+                
+                string uploads = Path.Combine(environment.WebRootPath, "uploads");
+                fileName = Guid.NewGuid() + Path.GetExtension(model.postImg.FileName).ToLower();
+                string fullPath = Path.Combine(uploads, fileName);
+                model.postImg.CopyToAsync(new FileStream(fullPath, FileMode.Create));
+                model.picture = fileName;
+            }
+
+            post.updatedAt = todaysDate;
+            post.picture = fileName;
+
+            post.title = model.title;
+            post.summary = model.summary;
+            post.Slug = model.Slug;
+            post.content = model.content;
+
+            _unitOfWork.Post.EditPost(post);
+          
+            _unitOfWork.save();
+
+            return Ok();
+        }
 
         [HttpPost("GetPosts")]
         public IActionResult GetPosts(int pageSize, int pageNumber)
