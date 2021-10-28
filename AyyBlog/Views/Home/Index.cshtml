@@ -8,9 +8,19 @@
 
     <div class="mid-text">
         <div class="word">
-            <span class="p">Ay</span><span class="n">Blog</span>
+            <span class="p"><</span>
+            <span class="p">Ay</span>
+
+            <span class="n">Blog</span>
+            <span class="n">></span>
         </div>
-        <h5>Coding topics , thoughts and any</h5>
+        <h5>Tech topics , coding and best practices</h5>
+        
+        <div class="btn-Create mt-5">
+
+            <a href="https://localhost:5001/Post/CreatePost" class="creat-Po">Create Your own Posts</a>
+        </div>
+
     </div>
 
 </div>
@@ -46,7 +56,7 @@
             HasNext,
             HasPrev,
             TotalPages = 0,
-            pageSize = 1,
+            pageSize = 4,
             page = 1;
 
         getPosts(pageSize, page);
@@ -54,6 +64,10 @@
 
 
         $(".prev-btn").on("click", function () {
+
+            $('html, body').animate({
+                scrollTop: $("#posts").offset().top
+            }, 600);
 
             if (HasPrev == true) {
                 getPosts(pageSize, --CurrentPage);
@@ -73,6 +87,10 @@
         });
 
         $(".next-btn").on("click", function () {
+            $('html, body').animate({
+                scrollTop: $("#posts").offset().top
+            }, 600);
+
             if (HasNext == true) {
                 getPosts(pageSize, ++CurrentPage);
                 if ($(".prev-btn").hasClass("stop")) {
@@ -129,15 +147,15 @@
                         html += `
 
 
-                     <div class="col-12 col-md-6 col-lg-4">
-                    <div class="card border-0 shadow-lg pt-5 my-5 position-relative">
+                     <div class="col-12 col-md-6 col-lg-4  mt-5 mb-5">
+                    <div class="card border-0 shadow-lg">
                         <div class="card-body p-4">
                             <div class="member-profile position-absolute w-100 text-center">
         
                                 <img
                                     class="rounded-circle mx-auto d-inline-block shadow-sm"
                                     src="/images/UserProfileImage/`+ response.postsValues[i].profilePic + `" alt=""></div>
-                            <div class="card-text mb-4">
+                            <div   class="card-text mt-5 mb-4">
                                 <a  class="member-name mb-0 text-center  font-weight-bold"  href="https://localhost:5001/Profile/SearchUserProfile?Slug=`+ response.postsValues[i].slug + `">` + response.postsValues[i].userName + `</a>
                             </div>
                             <div class="post-time">

@@ -74,7 +74,9 @@ namespace Infrastructure.Repoo
            return _dbcontext.post.Where(m => m.Slug == slug).Include(a => a.applicationUser).Select(item=>new ApplicationUser
            {
               UserName = item.applicationUser.UserName,
-              Email = item.applicationUser.Email
+              Email = item.applicationUser.Email,
+              ProfilePic = item.applicationUser.ProfilePic,
+              About = item.applicationUser.About
            }).FirstOrDefault();
         }
     }

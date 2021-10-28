@@ -5,7 +5,12 @@
   font-family: 'Nunito Sans', sans-serif;  font-weight: bold;
   
 }
-
+a{
+    text-decoration:none;
+}
+a:hover {
+    color: #b1202c;
+}
 body{
   background-color: #09080f;
 }
@@ -14,6 +19,42 @@ body{
   font-size: 20px;
 }
 
+.btn-Create{
+
+    margin-top:30px;
+
+}
+
+.creat-Po {
+
+    display:inline-block;
+    background-color: #c43736;
+    border-radius: 40%;
+    background-color: #b32629;
+    text-decoration: none;
+    padding: 4px 8px;
+    /* color: whitesmoke; */
+
+    border-radius: 24px;
+    margin-right: 5px;
+    margin: 2px 0;
+    margin-top: 2px;
+    margin-right: 0px;
+    font-size: 19px;
+    padding: 30px;
+    line-height: 10px;
+    letter-spacing: -.5px;
+    border: black;
+    border-radius: 24px;
+    color: white;
+    margin-right: 3px;
+    transition: border ease-in 0.2s;
+    width: 350px;
+    font-size: 27px;
+}
+.creat-Po :hover{
+    color:white !important;
+}
 /* Hero Page*/
 .hero-page {
     /* Center and scale the image nicely */
@@ -135,8 +176,10 @@ margin-top:70px;
   margin-top:70px;
 
 }
-.card{
-  margin-bottom: 40px;
+.card {
+    margin-bottom: 40px;
+    width: 100%;
+    height: 100%;
 }
 /* Margins between sections card */
 
@@ -154,6 +197,7 @@ margin-top:70px;
 
 .card-text{
   font-weight: 600;
+  text-align:center;
 }
 
 .blue-card .card-img-top{
@@ -626,6 +670,7 @@ transition: border ease-in 0.2s;
     color: #c9282b;
     margin-right: 3px;
     transition: border ease-in 0.2s;
+    background-color:black;
 }
 
     .p-delete:hover {
@@ -641,13 +686,15 @@ transition: border ease-in 0.2s;
     border-radius: 24px;
     margin-right: 5px;
     margin: 2px 0;
-    font-size: 27px;
+    margin-right: 0px;
+    font-size: 36px;
     padding: 5px;
     border: 2px solid #2b394e;
     border-radius: 24px;
     color: #4ec60b;
     margin-right: 3px;
     transition: border ease-in 0.2s;
+    background-color: black;
 }
 
     .p-edit:hover {
@@ -655,28 +702,28 @@ transition: border ease-in 0.2s;
         color: #4ec60b;
     }
 
-    .p-hide {
-        text-decoration: none;
-        margin: 4px 8px;
-        color: gray;
-        border-radius: 24px;
-        margin-right: 5px;
-        margin: 2px 0;
-        font-size: 27px;
-        padding: 5px;
-        border: 2px solid gray;
-        border-radius: 24px;
-        color: #f0c33b;
-        margin-right: 3px;
-        transition: border ease-in 0.2s;
-    }
+.p-hide {
+    text-decoration: none;
+    margin: 4px 8px;
+    color: gray;
+    border-radius: 24px;
+    margin-right: 5px;
+    margin: 2px 0;
+    margin-right: 0px;
+    font-size: 27px;
+    padding: 5px;
+    border: 2px solid gray;
+    border-radius: 24px;
+    color: #f0c33b;
+    margin-right: 3px;
+    transition: border ease-in 0.2s;
+    background-color: black;
+}
 
-    .p-hide:hover {
-        border: 2px solid #f0c33b;
-       
-        color: #f0c33b;
-      
-    }
+        .p-hide:hover {
+            border: 2px solid #f0c33b;
+            color: #f0c33b;
+        }
 
 .p-show {
     text-decoration: none;
@@ -685,19 +732,21 @@ transition: border ease-in 0.2s;
     border-radius: 24px;
     margin-right: 5px;
     margin: 2px 0;
+    margin-right: 0px;
     font-size: 27px;
     padding: 5px;
-    border: 2px solid gray;
+    border: 2px solid #2b394e;
     border-radius: 24px;
-    color:blue;
+    color: #18bce1;
     margin-right: 3px;
     transition: border ease-in 0.2s;
+    background-color: black;
 }
 
 
     .p-show:hover {
-        border: 2px solid blue;
-        color: blue;
+        border: 2px solid #18bce1;
+        color: #18bce1;
     }
 .profile-author {
     margin-top: 80px;
@@ -959,7 +1008,11 @@ input {
 }
 .member-name {
     color: #b1202c;
+    font-size:25px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.member-name a{
+   text-decoration:none !important;
 }
 .card {
     position: relative;
@@ -974,10 +1027,17 @@ input {
     border: 1px solid red !important;
     border-radius: .25rem;
 }
+}
+
+.card-body a:hover {
+    color: #b1202c !important;
+}
+
 
 .member-profile {
     top: -50px;
     left: 0;
+
 }
 
 .text-center {
@@ -1107,3 +1167,11 @@ input {
     height:200px;
     margin-top:20px;
 }
+.footer-social-inner-wrap {
+    text-align: center;
+}
+
+    .footer-social-inner-wrap svg {
+        margin: 20px;
+    }
+

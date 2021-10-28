@@ -24,7 +24,7 @@
 
                         <div class="trend">
                             <a href="#">
-                                Trending
+                                @Model.createdAt
                             </a>
                         </div>
 
@@ -43,21 +43,17 @@
                             <div class="row mt-5">
 
                                 <div class="col-lg-1  ">
-                                    <img class="author-pic" src="assets/2.PNG">
+                                    <img class="author-pic" src="~/images/UserProfileImage/@Model.applicationUser.ProfilePic">
                                 </div>
 
                                 <div class="col-lg-11">
 
                                     <div class="author">
-                                        <span class="author-name">Robert Wilson</span>
-                                        <a href="#" class="p-tag">
-                                            Work
-                                        </a>
+                                        <a class="author-name" href="https://localhost:5001/Profile/SearchUserProfile?Slug=@Model.Slug">@Model.applicationUser.UserName</a>
 
                                         <a href="#" class="p-tag">
-                                            Notes
+                                            @Model.Category.title
                                         </a>
-
                                     </div>
 
                                 </div>

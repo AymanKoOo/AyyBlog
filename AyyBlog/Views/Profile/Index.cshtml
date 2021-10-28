@@ -11,16 +11,17 @@
 
         <div class="author-pic-profile">
 
-            <img src="https://bootdey.com/img/Content/avatar/avatar8.png" alt="">
+            <img src="~/images/UserProfileImage/@User.FindFirst("ProfilePic").Value" alt="">
+            
         </div>
 
         <div class="author-name">
-            @User.FindFirst("UserName").Value;
+            @User.FindFirst("UserName").Value
         </div>
 
         <div class="author-bio">
             <h2>
-                @User.FindFirst("About").Value;
+                @User.FindFirst("About").Value
             </h2>
         </div>
 
@@ -137,7 +138,10 @@
                     TotalCount = parseInt(response.totalCount);
                     //////////////
 
-                    $("#posts-num").append(TotalCount);
+                    if ($("#posts-num").empty()) {
+
+                        $("#posts-num").append(TotalCount);
+                    }
 
                     console.log("seeee");
                     $("#posts").html("");
@@ -160,8 +164,8 @@
                         html += `
 
 
-                     <div class="col-12 col-md-6 col-lg-4">
-                    <div class="card border-0 shadow-lg pt-5 my-5 position-relative">
+                     <div class="col-12 col-md-6 col-lg-4  mt-5 mb-5">
+                    <div class="card border-0 shadow-lg ">
                         <div class="card-body p-4">
                            <div class="control-post  border-0 mb-4 text-center">
 
@@ -203,9 +207,7 @@
 
                         </div>
                             <div class="post-time">
-                                <span class="post__minutes">
-                                    2 min read
-                                </span>
+                                
                                 <time class="post__date" datetime="2020-11-11">`+ response.postsValues[i].createdAt + `</time>
                             </div>
 
@@ -219,13 +221,11 @@
                         </div>
                         <div class="card-footer theme-bg-primary border-0 mb-4 text-center">
 
-                            <a href="#" class="p-tag">
-                                Work
+                           <a href="#" class="p-tag">
+
+                    `+ response.postsValues[i].category + `
                             </a>
 
-                            <a href="#" class="p-tag">
-                                Notes
-                            </a>
                         </div>
                     </div>
                 </div>

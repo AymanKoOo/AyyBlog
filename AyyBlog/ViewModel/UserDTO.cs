@@ -10,6 +10,10 @@ namespace AyyBlog.ViewModel
     {
         [Required(ErrorMessage = "User Name is already in Use")]
 
+
+        public string ProfilePic { get; set; }
+
+        public string About { get; set; }
         public string userName { get; set; }
 
         [Required(ErrorMessage = "Email is already in Use")]

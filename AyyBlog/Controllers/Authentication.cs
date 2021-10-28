@@ -123,7 +123,7 @@ namespace AyyBlog.Controllers
                 claims.Add(new Claim("Email", userObj.Email));
                 claims.Add(new Claim("UserName", userObj.UserName));
                 claims.Add(new Claim("About", userObj.About));
-
+                claims.Add(new Claim("ProfilePic", userObj.ProfilePic));
                 claims.Add(new Claim(ClaimTypes.NameIdentifier, model.email));
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);

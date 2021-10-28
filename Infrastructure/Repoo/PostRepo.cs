@@ -33,7 +33,13 @@ namespace Infrastructure.Repoo
         }
         public Post GetPostBySlug(string slug)
         {
-            return dataContext.post.FirstOrDefault(m => m.Slug == slug);
+             //dataContext.post.FirstOrDefault(m => m.Slug == slug).Include(s => s.applicationUser)
+             //          .Include(e => e.Category); ;
+
+            return dataContext.post
+                       .Where(x => x.Slug == slug)
+                       .Include(s => s.applicationUser)
+                       .Include(e => e.Category).FirstOrDefault();
         }
 
 
@@ -61,7 +67,7 @@ namespace Infrastructure.Repoo
         {
             return dataContext.post
                      .Where(a => a.applicationUser.Email == email)
-                     .Include(s => s.applicationUser);
+                     .Include(s => s.applicationUser).Include(e => e.Category); 
         }
 
         public PagedList<Post> GetUserPosts(int pageSize, int pageNumber,string email)
