@@ -95,6 +95,8 @@ namespace AyyBlog
             services.AddScoped(typeof(IPostRepo), typeof(PostRepo));
             services.AddScoped(typeof(ICategoryRepo), typeof(CategoryRepo));
             services.AddScoped(typeof(ITagRepo), typeof(TagRepo));
+            services.AddScoped(typeof(ICommentRepo), typeof(CommentRepo));
+
 
             ///Intalize cookie///
             ///

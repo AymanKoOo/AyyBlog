@@ -36,6 +36,7 @@ namespace Infrastructure.Data
         public DbSet<category> categories { get; set; }
 
         public DbSet<Tag> tags { get; set; }
-
+        public DbSet<Comment> Comment { get; set; }
+        public DbSet<Reply> Reply { get; set; }
     }
 }

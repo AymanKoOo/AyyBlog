@@ -14,5 +14,7 @@ namespace Core.Entites
 
         public  IEnumerable<Post> posts { get; set; }
 
+        public IEnumerable<Comment> comments { get; set; }
+        public IEnumerable<Reply> replies { get; set; }
     }
 }

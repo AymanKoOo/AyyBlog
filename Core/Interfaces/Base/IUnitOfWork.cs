@@ -10,10 +10,10 @@ namespace Core.Interfaces.Base
 
         IAdminRepo Admin { get; }
         IPostRepo Post { get; }
-
-       ICategoryRepo Category { get; }
+        ICommentRepo comment { get; }
+        ICategoryRepo Category { get; }
         ITagRepo Tag { get; }
-    void save();
+        void save();
    
     }
 }

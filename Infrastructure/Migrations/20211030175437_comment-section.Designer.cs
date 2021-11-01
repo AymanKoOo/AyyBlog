@@ -4,14 +4,16 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20211030175437_comment-section")]
+    partial class commentsection
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -235,14 +237,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("content")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("userId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("id");
 
                     b.HasIndex("commentID");
-
-                    b.HasIndex("userId");
 
                     b.ToTable("Reply");
                 });
@@ -429,13 +426,7 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Core.Entites.ApplicationUser", "user")
-                        .WithMany("replies")
-                        .HasForeignKey("userId");
-
                     b.Navigation("comment");
-
-                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("Core.Entites.post_tag", b =>
@@ -513,8 +504,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("comments");
 
                     b.Navigation("posts");
-
-                    b.Navigation("replies");
                 });
 
             modelBuilder.Entity("Core.Entites.Comment", b =>

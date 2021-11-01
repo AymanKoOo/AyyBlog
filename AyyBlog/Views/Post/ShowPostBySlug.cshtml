@@ -7,7 +7,7 @@
 
 <section>
 
-
+    <input type="hidden" id="postSlug" value="@Model.Slug" />
     <div class="trending">
         <div class="container-fluid">
 
@@ -31,7 +31,6 @@
                         <div class="trend-header">
                             @Model.title
                         </div>
-
 
 
                         <div class="trend-body">
@@ -80,7 +79,264 @@
 <section>
 
     <div class="container post-blog">
-      @Html.Raw(Model.content)   
+        @Html.Raw(Model.content)
     </div>
 
 </section>
+
+
+<section>
+
+    <div class="container comment-section">
+
+        <hr class="width:100px">
+        @*Comment Section with user pic*@
+        <div class="row media">
+
+            <div class="col-lg-1 col-md-2 col-sm-4 col-4">
+                <div class="media-Left">
+                    <img class="media-pic" src="~/images/UserProfileImage/@Model.applicationUser.ProfilePic">
+                </div>
+            </div>
+
+            <div class="col-lg-11 col-md-10 col-sm-8 col-8">
+                <div class="media-body">
+                    <textarea id="media-comment" class="comment-area"
+                              placeholder="Type your comment here
+                        ">
+                            
+                        </textarea>
+                </div>
+            </div>
+
+        </div>
+
+
+        @*Comments*@
+        <div id="RootComments">
+        </div>
+
+    </div>
+
+</section>
+
+
+<script>
+
+
+
+    $('#media-comment').keypress(function (e) {
+        var key = e.which;
+        if (key == 13)  // the enter key code
+        {
+            var comment = $('#media-comment').val();
+            var postSlug = $('#postSlug').val();
+            postComment(comment, postSlug);
+          
+        }
+    });
+
+    function isEmpty(obj) {
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key))
+                return false;
+        }
+        return true;
+    }
+
+    function postComment(comment,postSlug) {
+        if(comment != null){
+
+            $.ajax({
+                type: "POST",
+                url: "https://localhost:5001/Post/PostComment",
+                data: { "comment": comment, "postSlug": postSlug },
+                success: function (response) {
+                    getComments();
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+    }
+
+    var commentID = 0;
+    function ShowReplyBox( UserPic,commentID) {
+       
+        if (!$(".reply-box-" + commentID + "")[0]) {
+            console.log(commentID);
+            $("#CommentReplies_" + commentID)
+                .append(` <div class="mt-4 row reply-box-` + commentID + `" mt-5">
+    
+    <div class="col-lg-2 col-md-4 col-sm-6 col-6">
+        <div class="media-Left">
+                         <img class="media-pic" src="/images/UserProfileImage/`+ UserPic + `">
+
+        </div>
+    </div>
+    
+    <div class="col-lg-10 col-md-8 col-sm-6 col-6">
+        <div class="media-body">
+            <textarea id="ReplyComment-`+ commentID+`" onkeypress="PostReply(`+commentID + `, event);" class="comment-area"
+            placeholder="Type your comment here
+            " >
+                
+            </textarea>
+        </div>
+    </div>
+    
+    </div>`)
+
+        }
+    }
+
+    function PostReply(commentId, e) {
+        var key = e.which;
+        if (  key == 13) {
+            var reply = $('#ReplyComment-' + commentId).val();
+
+            $.ajax({
+                type: "POST",
+                url: "https://localhost:5001/Post/PostReply",
+                data: { "reply": reply, "commentId": commentId },
+                success: function (response) {
+                    getComments();
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+
+
+    }
+
+    async function getComments(postSlug) {
+        $.ajax({
+            type: "POST",
+            url: "https://localhost:5001/Post/GetComments",
+            data: {
+                "postSlug": $('#postSlug').val()
+            },
+            success: function (response) {
+
+
+                $("#RootComments").empty();
+                html = `
+    
+                `;
+
+                for (var i = 0; i < response.length; i++) {
+                    html += `
+                <div class="comment"  id="comment_`+ response[i].commentId + `">
+                    <div class="row">
+                        <div class="col-lg-1 col-md-2 col-sm-4 col-4">
+                            <div class="media-Left">
+                            </div>
+                            <a href="#">
+                                <img class="media-pic" src="/images/UserProfileImage/`+ response[i].profilePic + `">
+
+                            </a>
+                        </div>
+
+                        <div class="col-lg-11 col-md-10 col-sm-8 col-8">
+                            <div class="commentDescription">
+
+                                <div class="comment-content">   `+ response[i].content + `
+                                  </div>
+
+                                <div class="comment-info mb-2">
+                                    <div class="comment-owner">
+                                          `+ response[i].userName + `
+                                    </div>
+                                    <div class="comment-time">
+                                        `+ response[i].createdTime + `
+                                    </div>
+
+                                </div>
+                                <a class="comment-reply mt-3" href="#CommentReplies_`+ response[i].commentId + `"
+                                onclick="ShowReplyBox('`+ response[i].profilePic + `',` + response[i].commentId + `)" title="Post Reply">   <i class="fa fa-reply" aria-hidden="true"></i>Reply</a>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="media comment-replies" id="CommentReplies_`+ response[i].commentId + `">
+
+                        `;
+
+                    console.log(response[i].reply.length);
+                    if (isEmpty(response[i].reply[0]) == false) {
+
+                        for (var k = 0; k < response[i].reply.length; k++) {
+
+                            html += `
+                         <div class="row media mt-4" id="reply_`+ response[i].commentId + `">
+
+                            <div class="col-lg-2 col-md-6 col-sm-6 col-6">
+                                <div class="media-Left">
+                                </div>
+                                <a href="#">
+                                   <img class="media-pic" src="/images/UserProfileImage/`+ response[i].reply[k].profilePic + `">
+                                </a>
+                            </div>
+
+                            <div class="col-lg-10 col-md-6 col-sm-6 col-6">
+                                <div class="commentDescription">
+
+                                    <div class="comment-content">
+                                       `+ response[i].reply[k].content + `
+                                    </div>
+
+                                    <div class="comment-info">
+                                        <div class="comment-owner">
+                                          `+ response[i].reply[k].userName + `
+                                        </div>
+                                        <div class="comment-time">
+                                              `+ response[i].reply[k].createdTime + `
+                                        </div>
+
+                                     </div>
+
+                                   </div>
+                               </div>
+                            </div>
+                `;
+                        }
+                    }
+                    html += `
+                </div>
+        </div>
+             `;
+                }
+
+                html += `
+               </div>`;
+
+                $("#RootComments").html(html);
+                console.log(response);
+                console.log(response.length);
+
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    }
+    ///////
+    $(getComments(postSlug))
+
+
+
+</script>

@@ -21,13 +21,17 @@ namespace Infrastructure.Repoo.Base
 
         public ICategoryRepo Category { get; }
 
-        public UnitOfWork(DataContext context, IAdminRepo adminRepo, IPostRepo postRepo, ITagRepo tagRepo,ICategoryRepo Category)
+        public ICommentRepo comment { get; }
+
+
+        public UnitOfWork(DataContext context, IAdminRepo adminRepo, IPostRepo postRepo, ITagRepo tagRepo,ICategoryRepo Category, ICommentRepo commentRepo)
         {
             this._dbContext = context;
             this.Admin = adminRepo;
             this.Category = Category;
             this.Post = postRepo;
             this.Tag = Tag;
+            this.comment = commentRepo;
         }
 
         public void Dispose()

@@ -40,6 +40,8 @@ namespace Core.Entites
 
         public ICollection<post_tag> post_Tags { get; set; }
 
+        public ICollection<Comment> comments { get; set; }
+
         public int CategoryId { get; set; }
         public category Category { get; set; }
 

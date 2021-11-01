@@ -18,6 +18,5 @@ namespace Infrastructure.Repoo.Base
             _dbcontext = dbcontext;
             table = _dbcontext.Set<T>();
         }
-
     }
 }

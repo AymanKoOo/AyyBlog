@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Services\" />
     <Folder Include="Views\Category\" />
     <Folder Include="wwwroot\fonts\" />
     <Folder Include="wwwroot\images\UserProfileImage\" />
