@@ -1,0 +1,2 @@
+# AyyBlog
+Blog .netcore
